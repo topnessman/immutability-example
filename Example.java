@@ -29,9 +29,9 @@ public class Example {
 
     // @Initialize allows "this" to be able to be immutable, mutable and polyimmutable when assigning fields,
     @Initialize         // Just like extending the scope of the constructor field assignment
-    void postInit(@Poly Example this) { // Forbid @Readonly on "this" of a method with @Initialize annotation, just like constructor return type
+    void postInit(@PolyImmutable Example this) { // Forbid @Readonly on "this" of a method with @Initialize annotation, just like constructor return type
         // Typecheck because of the existence of @Initialize
-        this.o = new @Poly Object();
+        this.o = new @PolyImmutable Object();
         // Just like in constructor, instance method invocation in constructor still needs to satisfy T-INVKs
         // the standard method inoacation typing rule.
         this.anotherPostInit();
