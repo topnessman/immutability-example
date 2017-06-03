@@ -49,6 +49,8 @@ class Node {
     // Think of changing PolyImmutable to Immutable and check the below makes sense or not.
     @PolyImmutable Example e;
 
+    // Actually, Java doesn't allow constructors with the same signature to exist in one class. Annotation doesn't count as part of signature.
+    // So constructor here and below can't coexist in valid Java class. This is just for demonstrating type rules.
     @Immutable Node (@Immutable Example e) {
         this.e = e;
     }
