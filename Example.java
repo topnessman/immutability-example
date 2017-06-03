@@ -53,6 +53,10 @@ class Node {
         this.e = e;
     }
 
+    // e could be @PolyImmutable, beause @Mutable constructor doesn't allow instantiating this object with @Immutable type, thus e couldn't be
+    // abstract state of an @Immutable object. But it's the same. Since the only reference is already @Mutable, then field e should will be
+    // @Mutable even if it's declared to be @PolyImmutable. So in order for type rules and stronger and safer type system, we strongly restrict
+    // that e is @Mutable
     @Mutable Node (@Mutable Example e) {
         this.e = e;
     }
