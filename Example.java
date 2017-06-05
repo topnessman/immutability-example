@@ -17,6 +17,7 @@ public class Example {
     @PolyImmutable Number n;
 
     @Mutable Example () {
+        // Assume we are invoking a valid constructor at line 75
         this.f = new @Immutable Node(this);
     }
 
