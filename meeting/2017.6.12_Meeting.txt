@@ -1,0 +1,10 @@
+field is unique in whole
+
+inference: focus on immutability now.  programmer write explicit initialization qualifiers on methods which wants behaviour different than default, i.e. free rather than commmited.
+nninf directory - simple nullness type system inference(doesn't implement all the type rules)
+
+example to which level in class hierarchy during initialization for immutability guaranteee. good or bad to track until which class fields are initialized?
+
+write small unit tests, have dummy visitos - fail - add assignment visit logic - let assignment tests pass - add method invocation visit rules - let those tests pass - and continue until all the tests pass.
+
+Focus on implementation of viewpoint adaptor and target locations and wrapping up GUT(and inference). -> extends to left hand side
