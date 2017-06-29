@@ -12,10 +12,6 @@ public class DateCell {
         return this.date;
     }
 
-    @PolyImmutable Date getWhatever(@Readonly DateCell this) {
-        return new @PolyImmutable Date();// In the T-NEW of updated version, instantiation to @PolyImmutable object is allowed
-    }
-
     void cellSetHours(@Mutable DateCell this) {
         // ReIm argues that viewpoint adapting to lhs(@Mutable here) trasmits the context to current "this" via below type rules:
         // q(this-cellSetHours) <: q(md) |> q(this-getDate) Which is q(this-cellSetHours) <: @Mutable |> @PolyImmutable = @Mutable
@@ -42,22 +38,9 @@ public class DateCell {
         int hour = rd.getHours();
     }
 
-    void typecheckInReImButNotTypeCheckIfAdaptedToReceiver(@Readonly DateCell this) {
-        // Doesn't typecheck if adapted to receiver because @Readonly |> @PolyImmutable <: @Mutable is false.
-        // But it typechecks in ReIm because @Mutable |> @PolyImmutable <: @Mutable holds.
-        // In fall term 2016, I said, we want to get @Mutable object from a @Readonly object(also @Immutable object). That's true.
-        // For example, it's universal that a method can create a local object and return it to the caller, so it can be mutated.
-        // But here, we are instantiating poly return type to mutable type from a readonly receiver. Doing so doesn't harm anything of course,
-        // but it makes the type system not intuitive anymore. Intuitively, a poly something becomes anything that is used to access it, that
-        // should be the receiver. If a programmer really wants to mutable the returned object, he/she should make the return type of getWhatever mutable.
-        @Mutable Date whatever = this.getWhatever();
-    }
-
     // For a method declaration, if type of this, formal parameters and return type are annotated with @Readonly, @Immutable, @Mutable,
     // adaptating to whatever doesn't make a difference. Only when they are @PolyImmutable, there is real difference between the two.
     // The most tricky case - receiver, return type are @PolyImmutable is proven to be valid in receiver adaptation methodology.
     // ReIm doesn't support instatiating poly and readonly objects, so if return type is poly, method receiver is also poly. ReIm's
-    // reasoning using the cellSetHourse, cellGetHours, getDate methods failed to show the necessity of viewpoint adapting to lhs. The
-    // only benefit is that a poly return type method can be instantiated to any lhs types regardless of any receiver the method is invoked
-    // on. But is that a good matter? It only confuses the user. So I think viewpoint adaping to receiver makes more sense than lhs.
+    // reasoning using the cellSetHourse, cellGetHours, getDate methods failed to show the necessity of viewpoint adapting to lhs.
 }
