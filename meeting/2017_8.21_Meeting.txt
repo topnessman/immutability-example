@@ -1,0 +1,6 @@
+Poly as the default for field. For enums, use implicitTreeAnnotator to add @Immutable to enum constant
+Case studies: default for upper bounds. Readonly may be too restrictive. Because we can get a lot of warnings for mutating places. Just like Nullable as default upper bound causes warnings when dereferencing. We need some case studies to decide which on is better - Mutable or Readonly.
+AnnotatdJDK: only @Nullable is target to verify its existence. If only it exists, CR will think that annotated jdk exists. We already havd @Nullable in jdk8.jar. But we still get warning. We should pass(done) and ensure that it's used actually.
+
+
+For GUTI, we need to see the conflicting constraints and see if they happen on bytecode. If yes, we need to think better default qualifier for bytecode other thatn @Peer
