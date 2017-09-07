@@ -1,0 +1,33 @@
+The abstract state of the generic classed object depends on the upper bound of the type variable. If it's @Immutable, then it's deeply immutable, and fields belong to the abstact state. Otherwise, we COULD have mutable object which is excluded from the state of the object, if the upper bound is mutable. One example is @Immutable List<@Mutable Date>(more flexible)
+@Immutable on class declaration recstricts: all constructors are immutable; all type parameter's upper bounds are immutable.
+
+Whether type variable is part of the abstract state or not shouldn't depend on if it's used on field or not. For example, an interface doesn't have field. BUT its implementation class can use the type variable on fields, which makes it not make sense to say if it's used on fields, then it's abstract state.
+
+We may need two qualifiers for field polymorphism and method polymorphism.
+
+For field polymorphism, we may need a new annotation, for example, @ReceiverDependentImmutable to keep the existing viewpoint adaptation rules for accessing fields.
+But for methods, it may be better to have a different qualifier to express polymorphism in a way other than viewpoint adaptation, for example, we use the actual environment to infer the actual type for generic methods. Example:
+
+<T> T get(){
+}
+
+Invocation:
+// Here we use the lhs - "String" to determine which is the actual substitution for type variable T.
+// We do it in this way: find a type which is the subtype of actual invoked lhs type - String. Then we find a solution "String", which is the subtype of "String", and use it to substitute T.
+String s = get();
+
+
+<T> T get(T t){
+
+}
+
+Invocation:
+Object o = get("123");
+// We do it in this way to find a sustitution for T:
+Find a type which is 1) subtype of lhs - "Object" and supertype of "123"(method argument), which becomes: String <: T <: Object
+Then we find a solution for T - String and thus T becomes String.
+
+We need to think about whether we can use such new "method polymorphism" for methods which needs polymorphism. And we already have exsiting util class called "QualifierPolymorphism" to do this job and hopefully we can do implement easily in CF.
+
+
+q |> poly = poly

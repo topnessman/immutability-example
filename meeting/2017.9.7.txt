@@ -1,0 +1,4 @@
+1. See PolyCollector class to see if it correctly collects constraints from three sources(assignment contect, actual receiver, arguments). Test with each of them first.
+2. See how we can set "another" assignment context when visiting method invocation(Hint: TypeFromExpressionVisitor). For example:
+when we visit a.getObject(), "another" assignment context should be set to declared receiver type of getObject(), because we're psudo-assigning a to the declared receiver type of getObject();
+Same reason, when we visit a.getObject().get2Object(), "another" assignment context should be set to declared receiver type of get2Object(). This "assignment context" can be used to resolve the subsitution of polymorphic qualifier.
