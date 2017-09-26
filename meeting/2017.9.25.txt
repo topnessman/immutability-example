@@ -1,0 +1,40 @@
+Separate @PolyImmutable to two different qualifiers @ReceiverDependantMutable and @PolyMutable(type parameter).
+
+Think about whether it makes sense to also allow @PolyMutable(type parameter) on constructors. Because there are constructors in Java that allows type parameters. It's for better consistency and easier to understand.
+
+Allow @Mutable fields. Exclude @Readonly and @Mutable fields from the abstract state of the encapsulating object. For mutable fields, we even allow reassigning mutable fields through a readonly or immutable receiver because it's not in the abstract state. @Readonly receiver cannot be used to reassign a field which is in the abstract state of the receiver. Think about whether reassigning @Readonly fields makes sense or not, which is not in abstract state.
+
+Allow @Mutable and @Readonly constructor parameter types because those two kinds of fields can capture @Mutable objects even in immutable constructors and those constructor @Mutable arguemnts cannot be captured by @Immutable or @ReceiverDependantMutable fields.
+
+On fields, always forbid @PolyMutable(type parameter), i.e. instance and static fields because it's similar to type parameter and only allowed on method declaration(static or instance both ok)
+
+If we have a @ReceiverDependantMutable instance field, we need to ensure no cross boundary types are stored inside @ReceiverDependantMutable instance field.
+For example:
+@ReceiverDependantMutable rdm;
+@Mutable p;
+@Readonly ro;
+ro.rdm = new @Immutable Object();
+p.rdm.setXXX().
+But this will not happen since @ReceiverDependantMutable is in the abstract state and thus @Readonly is not allowed to ressign its abstract-state-field.
+@Immutable imp;
+"imp = p;" is invalid(imcopatible) so it won't happend immutable object gets mutable reference to point to that.
+Therefore, @ReceiverDependantMutable has only one runtime semantic bound to it.
+
+@RecevierDependantMutable is forbidden in any static context - static fields, static block and static methods.
+
+Default qualifier for static field is @Mutable. Default qualifier for instance field is @ReceiverDependantMutable.
+
+We don't allow @Bottom to used on ANY place except on "null" literal.
+
+
+                  readonly
+|         |                   |                      |
+mutable immutable  receiverdependantmutable     polymutable
+                     |
+                  bottom
+
+q |> receiverdependantmutable = q
+_ |> polymutable = polymutable
+
+Think about if we need @ReceiverDependantMutable in GUT. But we need @PolyMutable in GUT(factory pattern example)
+Right now we don't allow writing to @Lost or @VPLost fields, so @Rep cannot flow into @Peer fields through @Any receiver. Maybe we can have another way to ensure this like PICO(some special rules for using top qualifier as actual receiver in assignments).
