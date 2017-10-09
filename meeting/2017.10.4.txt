@@ -1,0 +1,7 @@
+1. Reference type = null. Should we propagate @Bottom in applyinfferredannotations to lhs, which will be not valid?(not solved. Still need to ask)
+2. Is the defaulting mechanism for static fields good? (not solved. Still need to ask)
+3. How about visitBinary and visitTypeCase? Leave the hacky replace annotation until implicitfor is uniformly enforced. But since we have assignability dimension, we don't need readonly int, so always replacing primitive, boxed primitive and string with @Immutable makes sense.
+4. Duplicate type validator error message. (not solved. Still need to ask)
+
+1. Add assignability dimension: final(exists), assignable, receiverdependantassignable. If, for example, a field is declared to be assignable immutable, it's not in abstract state. For all combinations, see the picture taken in the same day as this file.
+2. ImplicitFor should have the highest priority. Nobody should override it in any place. Reproduce this problem in existing or a new playground type system and open an issue.
