@@ -1,0 +1,7 @@
+1. Use conservative @Readonly as the type for "this" in initialization blocks. Encourage users to write constructors or helper methods to initialize fields rather than using initialization blocks.
+2. Right now, we can choose to only support upcasting, because there is no any runtime mutability information, but downcasting needs runtime checking. If under this assumption, we see in real cases a lot of programs have errors(inference mode) and it's a common pattern, then we may want to allow up and downcasting(comparable like in GUT paper). We need to figure out how this pattern is common.
+3. SuperMethodInvocation test in typecheck mode makes sense to forbid super call to foo() method.
+4. Fixup the PICO and GUTInferenceTests, and add them to the downstream test to inference framework.
+5. Think about hashCode() method problem and clone() method problem. There belongs to case study phase.
+6. Focus on cases studies and experiments.
+
